@@ -1,0 +1,51 @@
+swagger: '2.0'
+info:
+  title: Shield API
+  version: 1.0.0
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /lambda-shield-redirect:
+    get:
+      produces:
+      - "application/json"
+      parameters:
+        - name: user
+          in: query
+          required: false
+          type: string
+        - name: repo
+          in: query
+          required: false
+          type: string
+        - name: branch
+          in: query
+          required: false
+          type: string
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers: {}
+        303:
+          description: "303 response"
+          headers:
+            Location:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "303"
+            responseParameters:
+              method.response.header.Location: "integration.response.body.location"
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:620048203451:function:shield-redirect/invocations"
+        httpMethod: "POST"
+        type: "aws"
+definitions:
+  Empty:
+    type: object
+    properties: {}

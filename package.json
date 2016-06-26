@@ -1,0 +1,30 @@
+{
+  "name": "lambda-shield-redirect",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node node_modules/gulp/bin/gulp.js single",
+    "build_watch": "node node_modules/gulp/bin/gulp.js default",
+    "run": "node build/index.js '{\"user\": \"dwyl\", \"repo\": \"dwyl.github.io\"}'",
+    "publish_lambda": "node node_modules/gulp/bin/gulp.js single && zip -rq archive_newest.zip compiled_binaries build node_modules/del node_modules/sloc && cp archive_newest.zip zips/archive_$(date +%s).zip && aws --profile ncf lambda update-function-code --function-name shield-redirect3 --publish --zip-file fileb://archive_newest.zip"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "del": "^2.2.1",
+    "sloc": "^0.1.10"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.9.0",
+    "del": "^2.2.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-eslint": "^2.0.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^1.5.4",
+    "ls": "^0.1.0",
+    "sloc": "^0.1.10"
+  }
+}

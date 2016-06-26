@@ -1,0 +1,172 @@
+env:
+  browser: true
+  node: true
+  es6: true
+extends: 'eslint:recommended'
+installedESLint: true
+parserOptions:
+  ecmaFeatures:
+    experimentalObjectRestSpread: true
+rules:
+  indent:
+    - warn
+    - 2
+  linebreak-style:
+    - error
+    - unix
+  quotes:
+    - error
+    - single
+  semi:
+    - error
+    - always
+  no-eval:
+    - error
+  curly:
+    - error
+    - all
+  no-unsafe-finally:
+    - error
+  no-console:
+    - off
+  no-extra-semi:
+    - warn
+  no-unused-vars:
+    - warn
+    # This is the Regex pattern for variables to ignore. Because ESLint seems to
+    # have trouble recognizing that we DO use the React elements we build with
+    # JSX, we end up having to explicitly whitelist every single React element
+    # we use.
+    # When using multi-line strings in YAML as we're doing it, the line breaks
+    # turn into spaces. To combat this, we put a Regex or operator (|) at the
+    # beginning and ending of every line, so the Regex ends up basically saying
+    # "or space" a whole bunch, which is fine.
+    - varsIgnorePattern: |-
+        ^(
+        |FullPage|ContractList|ContractElement|LivePreview|ContractBox|
+        |ContractForm|ClassesTable|Class|GenericInput|TextInput|TextArea|
+        |CheckBox|SelectInput|SelectOption|BasicComponent|
+        |LoginBar|LoginLoadThing|GoogleLoginArea|
+        )$
+  no-undef-init:
+    - error
+  block-scoped-var:
+    - error
+  complexity:
+    - warn
+  default-case:
+    - error
+  dot-notation:
+    - error
+  eqeqeq:
+    - error
+    - smart
+  no-caller:
+    - error
+  no-extend-native:
+    - error
+  no-extra-bind:
+    - warn
+  no-invalid-this:
+    - error
+  no-labels:
+    - error
+  no-lone-blocks:
+    - error
+  no-loop-func:
+    - error
+  no-magic-numbers:
+    - off # TODO this eventually should be at least 'warn'
+  no-multi-str:
+    - error
+  no-native-reassign:
+    - error
+  no-new:
+    - error
+  no-new-func:
+    - error
+  no-new-wrappers:
+    - error
+  no-proto:
+    - error
+  no-script-url:
+    - error
+  no-throw-literal:
+    - error
+  no-self-compare:
+    - error
+  no-unmodified-loop-condition:
+    - error
+  no-unused-expressions:
+    - warn
+  no-useless-concat:
+    - error
+  no-with:
+    - error
+  yoda:
+    - error
+
+  strict:
+    - error
+    - global
+  no-shadow:
+    - error
+  no-use-before-define:
+    - error
+
+  callback-return:
+    - warn
+  global-require:
+    - error
+  handle-callback-err:
+    - error
+  no-new-require:
+    - error
+  no-process-exit:
+    - error
+  max-len:
+    - warn
+  max-lines: # TODO come back to this, maybe set at 500?
+    - off
+  new-cap:
+    - error
+  new-parens:
+    - error
+  no-lonely-if:
+    - error
+  no-unneeded-ternary:
+    - warn
+  no-trailing-spaces:
+    - error
+  no-whitespace-before-property:
+    - error
+  one-var:
+    - error
+    - never
+  require-jsdoc: # TODO come back to this, we should be using JSDoc everywhere
+    - off
+  semi-spacing:
+    - error
+
+  arrow-body-style:
+    - warn
+    - as-needed
+  no-useless-computed-key:
+    - error
+  no-useless-rename:
+    - error
+  no-var:
+    - error
+  prefer-arrow-callback:
+    - warn
+  prefer-const:
+    - error
+  prefer-reflect:
+    - warn
+  prefer-rest-params:
+    - error
+  prefer-spread:
+    - error
+  no-confusing-arrow:
+    - error
+    - allowParens: true
