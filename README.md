@@ -23,3 +23,9 @@ into a URL suitable for http://shields.io that looks something like
 `https://img.shields.io/badge/<SUBJECT>-<STATUS>-<COLOR>.svg`. API Gateway then takes this result and returns an HTTP 302
 redirect to the user, with a Location field set to the generated shields.io URL. Thus, shields.io serves the intended image to
 the user.
+
+#### Building the correct version of github
+
+- Create an EC2 instance from an official Amazon Linux AMI
+- SSH in
+- `sudo yum install -y curl-devel expat-devel gettext-devel openssl-devel perl-devel zlib-devel autoconf && curl https://codeload.github.com/git/git/tar.gz/v2.9.0 > git-2.9.0.tar.gz && tar -zxf git-2.9.0.tar.gz && cd git-2.9.0 && make configure && ./configure --prefix=/var/task/compiled_binaries && make all`

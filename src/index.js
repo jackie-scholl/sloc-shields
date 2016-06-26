@@ -11,7 +11,11 @@ const path = require('path');
 
 
 (function(){
-  const TEMP_REPO = '/tmp/temp-linecount-repo';
+  const IS_DEV_MACHINE = process.env.LAMBDA_SHIELD_REDIRECT_LOCAL;
+  //const TEMP_REPO = '/tmp/temp-linecount-repo';
+  //const TEMP_REPO = 'tmp/temp-linecount-repo';
+  const TEMP_REPO = (IS_DEV_MACHINE? '' : '/') + 'tmp/temp-linecount-repo';
+  //const TEMP_REPO = 'tmp/temp-linecount-repo';
   //const TEMP_REPO = 'temp-linecount-repo';
   const lsRecursive = function lsRecursive2(path2) {
     //console.log(path2);
@@ -104,9 +108,9 @@ const path = require('path');
     });
   };*/
   const gitClone2 = function(repoUrl, callback) {
-    const isDevMachine = process.env.LAMBDA_SHIELD_REDIRECT_LOCAL;
-    console.log('isDevMachine: ' + isDevMachine);
-    const gitCommand = isDevMachine? 'git' :
+
+    console.log('isDevMachine: ' + IS_DEV_MACHINE);
+    const gitCommand = IS_DEV_MACHINE? 'git' :
         //'./compiled_binaries/ec2-linux-git';
         './compiled_binaries/ec2-linux-git-2';
     console.log('gitCommand: ' + gitCommand);
@@ -121,11 +125,13 @@ const path = require('path');
           if (err) {
             //process.stderr.write(JSON.stringify(err)+'\n');
             //process.stderr.write(stderr);
+            console.log('err');
             console.log(JSON.stringify(err));
             console.log(stderr);
             return callback(err, null);
           } else {
             //process.stdout.write(stdout);
+            console.log('gitCommand succeeded');
             console.log(stdout);
             return callback(null, TEMP_REPO);
           }
@@ -159,14 +165,20 @@ const path = require('path');
     console.log('__dirname: ' + __dirname);
     console.log('ls: ' + lsRecursive('compiled_binaries'));
     //console.log(`Current directory: ${process.cwd()}`);
-    const promise = del(TEMP_REPO)
+    const promise =
+        new Promise((resolve, reject) =>
+          {console.log('starting promise stuff'); resolve('woo');})
+        .then(() => {console.log('hello');})
+        .then(() => del(TEMP_REPO))
+        //del(TEMP_REPO)
+        .then(() => {console.log('del succeeded!');})
         .then(() => gitClone2Promise(repoUrl))
         .then(() => countLocPromise());
     promise.catch((err) => {console.log('catching promise error: ' +
         JSON.stringify(err));});
     //promise.then((val) => {console.log('success! val is' + val);});
-    promise.then(() => del(TEMP_REPO));
-    promise.catch(() => del(TEMP_REPO));
+    //promise.then(() => del(TEMP_REPO));
+    //promise.catch(() => del(TEMP_REPO));
     promise.then((summary) => {callback(summary);});
     /*gitClone2(repoUrl, () => {
       countLOC((summary) => {
