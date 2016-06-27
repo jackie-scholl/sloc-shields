@@ -1,5 +1,7 @@
 # sloc-shields
 
+![Lines of Code shield](https://5ezz6jithh.execute-api.us-east-1.amazonaws.com/prod/lambda-shield-redirect?user=raptortech-js&repo=sloc-shields)
+
 ### WIP
 
 This project is completely a work in progress. Nothing really works right now and there's no documentation or testing
