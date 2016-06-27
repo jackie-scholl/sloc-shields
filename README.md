@@ -17,17 +17,26 @@ project
 
 ### Design
 
-The image link goes to an API Gateway API that passes the request to Lambda, which downloads the current state of the project
-from Github and runs [SLOC](https://github.com/flosse/sloc) on the resulting directory. It takes the results and forms them
-into a URL suitable for http://shields.io that looks something like
-`https://img.shields.io/badge/<SUBJECT>-<STATUS>-<COLOR>.svg`. API Gateway then takes this result and returns an HTTP 302
-redirect to the user, with a Location field set to the generated shields.io URL. Thus, shields.io serves the intended image to
-the user.
+The image link goes to an API Gateway API that passes the request to Lambda, which downloads the current state of the
+ project from Github and runs [SLOC](https://github.com/flosse/sloc) on the resulting directory. It takes the results and
+forms them into a URL suitable for http://shields.io that looks something like
+ `https://img.shields.io/badge/<SUBJECT>-<STATUS>-<COLOR>.svg`. API Gateway then takes this result and returns an HTTP 302
+redirect to the user, with a Location field set to the generated shields.io URL. Thus, shields.io serves the intended image
+to the user.
 
-#### Building the correct version of github
+### How to use
 
-- Create an EC2 instance from an official Amazon Linux AMI
-- SSH in
-- `sudo yum install -y curl-devel expat-devel gettext-devel openssl-devel perl-devel zlib-devel autoconf && curl https://codeload.github.com/git/git/tar.gz/v2.9.0 > git-2.9.0.tar.gz && tar -zxf git-2.9.0.tar.gz && cd git-2.9.0 && make configure && ./configure --prefix=/var/task/compiled_binaries && make all`
+`![Lines of Code shield]
+(https://5ezz6jithh.execute-api.us-east-1.amazonaws.com/prod/lambda-shield-redirect?
+user=[YOUR-GITHUB-USERNAME]&repo=[YOUR-GITHUB-REPO-NAME])`
 
-sudo yum install -y curl-devel expat-devel gettext-devel openssl-devel perl-devel zlib-devel autoconf gcc && curl https://codeload.github.com/git/git/tar.gz/v2.9.0 > git-2.9.0.tar.gz && tar -zxf git-2.9.0.tar.gz && cd git-2.9.0 && make configure && ./configure --prefix=/var/task/compiled_binaries
+### Is this useful?
+
+It's really questionable why you would want to have the number of lines of code in your project right on your Github
+ README. What is the end user supposed to take away? Why do they care? If you can satisfactorily answer that, then sure,
+ use it; for most projects, though, this number is irrelevant.
+
+### So why have I created this project?
+
+To show that with just a few lines of code, you can can make your own shield API that calculates custom properties and uses
+them to generate custom shields.
