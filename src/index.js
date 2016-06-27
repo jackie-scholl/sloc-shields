@@ -9,9 +9,12 @@ const del = require('del');
 //const process = require('process');
 const path = require('path');
 
+//require('reflect-metadata');
+//require('babel-polyfill');
+
 
 (function(){
-  const IS_DEV_MACHINE = process.env.LAMBDA_SHIELD_REDIRECT_LOCAL;
+  const IS_DEV_MACHINE = !!process.env.LAMBDA_SHIELD_REDIRECT_LOCAL;
   //const TEMP_REPO = '/tmp/temp-linecount-repo';
   //const TEMP_REPO = 'tmp/temp-linecount-repo';
   const TEMP_REPO = (IS_DEV_MACHINE? '' : '/') + 'tmp/temp-linecount-repo';
@@ -19,14 +22,27 @@ const path = require('path');
   //const TEMP_REPO = 'temp-linecount-repo';
   const lsRecursive = function lsRecursive2(path2) {
     //console.log(path2);
-    const stat = fs.statSync(path2);
-    if (stat.isDirectory()) {
-      console.log(path2 + ' is directory');
-      return [path2].concat(
-        fs.readdirSync(path2).map((p) => path.join(path2, p)).map(lsRecursive)
-      );
-    } else {
-      return [path2];
+    try {
+      const stat = fs.statSync(path2);
+      if (stat.isDirectory()) {
+        console.log(path2 + ' is directory');
+        const result = [[path2]].concat(
+          fs.readdirSync(path2).map((p) => path.join(path2, p)).map(lsRecursive)
+        );
+        //return [].concat.apply([], result);
+        //return Reflect.apply([].concat, [], result);
+        return result.reduce((a, b) => a.concat(b));
+      } else {
+        return [path2];
+      }
+    } catch (exception) {
+      //console.log(exception);
+      if (exception.code === 'ENOENT') {
+        console.log('does not exist: '+exception.path);
+      } else {
+        throw exception;
+      }
+      //if (exception)
     }
     //fs.readdir(path)
   };
@@ -108,7 +124,6 @@ const path = require('path');
     });
   };*/
   const gitClone2 = function(repoUrl, callback) {
-
     console.log('isDevMachine: ' + IS_DEV_MACHINE);
     const gitCommand = IS_DEV_MACHINE? 'git' :
         //'./compiled_binaries/ec2-linux-git';
@@ -120,7 +135,7 @@ const path = require('path');
     //child_process.exec(clone_command, {}, (err, stdout, stderr) => {
     console.log('running git command now');
     child_process.execFile(gitCommand,
-        ['clone', '--depth', '1', repoUrl, TEMP_REPO],
+        ['clone', /*'--depth', '1',*/ repoUrl, TEMP_REPO],
         (err, stdout, stderr) => {
           if (err) {
             //process.stderr.write(JSON.stringify(err)+'\n');
@@ -141,14 +156,35 @@ const path = require('path');
       //callback();
         }
     );
-
-    //child_process.execFile('echo', ['clone', '--depth 1', repoUrl, TEMP_REPO],
-    // (err, stdout, stderr) => {
-  //child_process.spawn(gitCommand, ['clone', '--depth 1', repoUrl, TEMP_REPO])
   };
+
+  const gitClone3 = (repoUrl, callback) => {
+    console.log('isDevMachine: ' + IS_DEV_MACHINE);
+    console.log('running copy command now');
+    //const command = 'curl -L -s "'+repoUrl+'" | tar -xz && mv * "'+TEMP_REPO;
+    //const command = `mkdir tmp; rm -r tmp/*; cd tmp && curl -L -s "${repoUrl}/tarball/master" | `+
+    //    `tar -xz -C "${TEMP_REPO}" && echo "----" && ls && cd .. && mv tmp/* "${TEMP_REPO}"`;
+    const command = `rm -rf "${TEMP_REPO}" && mkdir "${TEMP_REPO}" && curl -L -s "${repoUrl}/tarball/master" | `+
+        `tar -xz -C "${TEMP_REPO}" --strip-components 1`;
+    child_process.exec(command, (err, stdout, stderr) => {
+      if (err) {
+        console.log('err');
+        console.log(JSON.stringify(err));
+        console.log(stderr);
+        console.log(stdout);
+        return callback(err, null);
+      } else {
+        //process.stdout.write(stdout);
+        console.log('gitCommand succeeded');
+        console.log(stdout);
+        return callback(null, TEMP_REPO);
+      }
+    });
+  };
+
   const gitClone2Promise = (repoUrl) => (
     new Promise((resolve, reject) => {
-      gitClone2(repoUrl, (err, success) => {
+      gitClone3(repoUrl, (err, success) => {
         if (err) {
           console.log(err);
           console.log('rejecting with error in gitclone2promise');
@@ -159,11 +195,18 @@ const path = require('path');
       });
     })
   );
+
   const repoLineCount2 = function(repoUrl, callback) {
     console.log('hello');
     console.log('Current directory: ' + process.cwd());
     console.log('__dirname: ' + __dirname);
-    console.log('ls: ' + lsRecursive('compiled_binaries'));
+    console.log('ls compiled_binaries: ' + lsRecursive('compiled_binaries'));
+    //console.log('/usr/bin: ' + JSON.stringify(lsRecursive('/usr/bin')
+    ///*.map(s => typeof s)*/)/*.filter((s) => (typeof s === 'string' &&
+    //s.includes('git'))).join('\n')*/);
+    //console.log('/usr/bin: ' + lsRecursive('/usr/bin')
+    //console.log('/var/task: ' + lsRecursive('/var/task')
+    //    .filter((s) => (typeof s === 'string' && s.includes('git'))));
     //console.log(`Current directory: ${process.cwd()}`);
     const promise =
         new Promise((resolve, reject) =>
@@ -241,11 +284,11 @@ const path = require('path');
     }
     //https://github.com/raptortech-js/ncf-web-contract-system.git
 
-    //return 'https://github.com/'
-    return 'git://github.com/'
+    return 'https://github.com/'
+    //return 'git://github.com/'
         + resultObj.user
         + '/' + resultObj.repo
-        + '.git';
+        ;//+ '.git';
   };
   const getLink = function(query) {
     const resultObj = {
@@ -319,7 +362,6 @@ const path = require('path');
     const query = JSON.parse(process.argv[2]);
     console.log(getLink(query));
     const repoUrl = getRepoUrl(query);
-    //repoLineCount(repoUrl, (summary) => {
     repoLineCount2(repoUrl, (summary) => {
       console.log('summary: ');
       console.log(summary);
