@@ -162,9 +162,12 @@ const path = require('path');
     console.log('isDevMachine: ' + IS_DEV_MACHINE);
     console.log('running copy command now');
     //const command = 'curl -L -s "'+repoUrl+'" | tar -xz && mv * "'+TEMP_REPO;
-    //const command = `mkdir tmp; rm -r tmp/*; cd tmp && curl -L -s "${repoUrl}/tarball/master" | `+
-    //    `tar -xz -C "${TEMP_REPO}" && echo "----" && ls && cd .. && mv tmp/* "${TEMP_REPO}"`;
-    const command = `rm -rf "${TEMP_REPO}" && mkdir "${TEMP_REPO}" && curl -L -s "${repoUrl}/tarball/master" | `+
+    //const command = `mkdir tmp; rm -r tmp/*; cd tmp && curl -L -s
+    //"${repoUrl}/tarball/master" | `+
+    //    `tar -xz -C "${TEMP_REPO}" && echo "----" && ls && cd .. &&
+    //mv tmp/* "${TEMP_REPO}"`;
+    const command = `rm -rf "${TEMP_REPO}" && mkdir -p "${TEMP_REPO}" && `+
+        `curl -L -s "${repoUrl}/tarball/master" | `+
         `tar -xz -C "${TEMP_REPO}" --strip-components 1`;
     child_process.exec(command, (err, stdout, stderr) => {
       if (err) {
@@ -213,6 +216,7 @@ const path = require('path');
           {console.log('starting promise stuff'); resolve('woo');})
         .then(() => {console.log('hello');})
         .then(() => del(TEMP_REPO))
+        .catch(() => (null))
         //del(TEMP_REPO)
         .then(() => {console.log('del succeeded!');})
         .then(() => gitClone2Promise(repoUrl))
@@ -303,6 +307,26 @@ const path = require('path');
         + '.svg';
     return resultLink;
   };
+
+  const getLink2 = (opts) => {
+    if (!opts.subject || !opts.status || !opts.color) {
+      throw new Error('missing vital options; opts='+JSON.stringify(opts));
+    }
+    //const opts2 = opts;
+    //opts2.extension = opts2.exten
+    let extensions = [];
+    if (opts.style) {
+      extensions = extensions.concat(`style=${opts.style}`);
+    }
+    if (opts.maxAge) {
+      extensions = extensions.concat(`maxAge=${opts.maxAge}`);
+    }
+    const extensionsString = extensions? '' : '?' + extensions.join('&');
+    const url = `https://img.shields.io/badge/${opts.subject}-${opts.status}`+
+        `-${opts.color}.svg`+extensionsString;
+    return url;
+    //url = url + opts.style? `style=${opts.style}`
+  };
   /*const getLocationHash = function(query, callback) {
     const repoUrl = getRepoUrl(query);
     repoLineCount(repoUrl, (summary) => {
@@ -351,8 +375,15 @@ const path = require('path');
       const locationHash = '#'+JSON.stringify(obj);
       //const locationHash = '#'+'summary='+JSON.stringify(summary)+'&event='+
       //JSON.stringify(event)+"&context="+JSON.stringify(context)
+      const badge = {
+        subject: 'LOC',
+        status: summary.total,
+        color: 'brightgreen'
+      };
+      const resultLink2 = getLink2(badge);
       context.succeed({
-        location: resultLink + locationHash
+        //location: resultLink + locationHash
+        location: resultLink2 + locationHash
       });
     });
   };

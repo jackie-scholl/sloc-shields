@@ -4,7 +4,7 @@
 
 ### WIP
 
-This project is completely a work in progress. Nothing really works right now and there's no documentation or testing
+This project works, is. There's no documentation or testing, but you can see from the shield above that it works, roughly.
 
 ### Purpose
 
@@ -29,3 +29,5 @@ the user.
 - Create an EC2 instance from an official Amazon Linux AMI
 - SSH in
 - `sudo yum install -y curl-devel expat-devel gettext-devel openssl-devel perl-devel zlib-devel autoconf && curl https://codeload.github.com/git/git/tar.gz/v2.9.0 > git-2.9.0.tar.gz && tar -zxf git-2.9.0.tar.gz && cd git-2.9.0 && make configure && ./configure --prefix=/var/task/compiled_binaries && make all`
+
+sudo yum install -y curl-devel expat-devel gettext-devel openssl-devel perl-devel zlib-devel autoconf gcc && curl https://codeload.github.com/git/git/tar.gz/v2.9.0 > git-2.9.0.tar.gz && tar -zxf git-2.9.0.tar.gz && cd git-2.9.0 && make configure && ./configure --prefix=/var/task/compiled_binaries
