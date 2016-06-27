@@ -413,14 +413,3 @@ https://5ezz6jithh.execute-api.us-east-1.amazonaws.com/prod/lambda-shield-redire
 https://github.com/raptortech-js/ncf-web-contract-system/tree/Thomas#event={\"body-json\":{},\"params\":{\"path\":{},\"querystring\":{\"branch\":\"Thomas\",\"repo\":\"ncf-web-contract-system\",\"user\":\"raptortech-js\"},\"header\":{\"Accept\":\"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,**;q=0.8\",\"Accept-Encoding\":\"gzip, deflate, sdch, br\",\"Accept-Language\":\"en-US,en;q=0.8\",\"CloudFront-Forwarded-Proto\":\"https\",\"CloudFront-Is-Desktop-Viewer\":\"true\",\"CloudFront-Is-Mobile-Viewer\":\"false\",\"CloudFront-Is-SmartTV-Viewer\":\"false\",\"CloudFront-Is-Tablet-Viewer\":\"false\",\"CloudFront-Viewer-Country\":\"US\",\"Host\":\"5ezz6jithh.execute-api.us-east-1.amazonaws.com\",\"Upgrade-Insecure-Requests\":\"1\",\"User-Agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36\",\"Via\":\"1.1 4ee3d5920fafcf4bca394fd489654c8c.cloudfront.net (CloudFront)\",\"X-Amz-Cf-Id\":\"1mRvbHNv7enker0gdAo5JeohYevWYnBtIkUxFvWOtQt11EIuBOwZyQ==\",\"X-Forwarded-For\":\"128.177.61.20, 204.246.168.64\",\"X-Forwarded-Port\":\"443\",\"X-Forwarded-Proto\":\"https\"}},\"stage-variables\":{},\"context\":{\"account-id\":\"\",\"api-id\":\"5ezz6jithh\",\"api-key\":\"\",\"authorizer-principal-id\":\"\",\"caller\":\"\",\"cognito-authentication-provider\":\"\",\"cognito-authentication-type\":\"\",\"cognito-identity-id\":\"\",\"cognito-identity-pool-id\":\"\",\"http-method\":\"GET\",\"stage\":\"prod\",\"source-ip\":\"128.177.61.20\",\"user\":\"\",\"user-agent\":\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36\",\"user-arn\":\"\",\"request-id\":\"c74e41e2-3bb6-11e6-882a-6dae75cfe1a3\",\"resource-id\":\"3eb1sb\",\"resource-path\":\"/lambda-shield-redirect\"}}&context={\"callbackWaitsForEmptyEventLoop\":true,\"logGroupName\":\"/aws/lambda/shield-redirect\",\"logStreamName\":\"2016/06/26/[$LATEST]ade83390a4504b96abc8424b21699969\",\"functionName\":\"shield-redirect\",\"memoryLimitInMB\":\"128\",\"functionVersion\":\"$LATEST\",\"invokeid\":\"c74f2c7f-3bb6-11e6-b8e6-f9102abce935\",\"awsRequestId\":\"c74f2c7f-3bb6-11e6-b8e6-f9102abce935\",\"invokedFunctionArn\":\"arn:aws:lambda:us-east-1:620048203451:function:shield-redirect\"}
 */
 /* eslint-enable max-len */
-
-
-/*
-Clone command:
-git clone --depth 1 "$1" temp-linecount-repo &&
-  printf "('temp-linecount-repo' will be deleted automatically)\n\n\n" &&
-  cloc temp-linecount-repo &&
-  rm -rf temp-linecount-repo
-
-
-*/
