@@ -321,7 +321,7 @@ const path = require('path');
     if (opts.maxAge) {
       extensions = extensions.concat(`maxAge=${opts.maxAge}`);
     }
-    const extensionsString = extensions? '' : '?' + extensions.join('&');
+    const extensionsString = /*extensions? '' :*/ '?' + extensions.join('&');
     const url = `https://img.shields.io/badge/${opts.subject}-${opts.status}`+
         `-${opts.color}.svg`+extensionsString;
     return url;
@@ -380,6 +380,10 @@ const path = require('path');
         status: summary.total,
         color: 'brightgreen'
       };
+      if (query.maxAge) {
+        badge.maxAge = query.maxAge;
+      }
+      badge.style = query.style;
       const resultLink2 = getLink2(badge);
       context.succeed({
         //location: resultLink + locationHash
