@@ -9,6 +9,7 @@
     "build_watch": "node node_modules/gulp/bin/gulp.js default",
     "run": "node build/index.js '{\"user\": \"dwyl\", \"repo\": \"dwyl.github.io\"}'",
     "run2": "node build/index.js '{\"user\": \"dwyl\", \"repo\": \"aws-sdk-mock\"}'",
+    "run3": "node build/index.js '{\"user\": \"raptortech-js\", \"repo\": \"sloc-shields\"}'",
     "publish_lambda": "node node_modules/gulp/bin/gulp.js single && zip -rq archive_newest.zip compiled_binaries build node_modules/del node_modules/sloc && cp archive_newest.zip zips/archive_$(date +%s).zip && aws --profile ncf lambda update-function-code --function-name shield-redirect3 --publish --zip-file fileb://archive_newest.zip"
   },
   "author": "",
