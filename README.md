@@ -4,7 +4,7 @@
 
 ### WIP
 
-This project works, is. There's no documentation or testing, but you can see from the shield above that it works, roughly.
+This project works right now for the most part. There's no documentation or testing, but you can see from the shield above that it works, roughly.
 
 ### Purpose
 
